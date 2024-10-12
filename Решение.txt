@@ -1,0 +1,20 @@
+1. Скачиваем и устанавливаем odbc драйвер https://ftp.postgresql.org/pub/odbc/releases/REL-17_00_0002/psqlodbc_x64.msi
+
+2. Настраиваем системный DSN (Экран 1.jpg)
+
+3. SSMS. Включаем компонент "Ad Hoc Distributed Queries" в настройках конфигурации безопасности сервера.
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+GO
+EXEC sp_configure 'Ad Hoc Distributed Queries', 1;
+RECONFIGURE;
+GO
+
+4. SSMS. Делаем запрос к Postgresql.
+select *
+from openrowset('MSDASQL'
+	, 'Driver=PostgreSQL Unicode(x64);Server=192.168.1.36;port=5432;database=wideworldimporters;uid=mikeu;pwd=ytgfhjkm'
+	, 'SELECT * FROM sales.invoicelines LIMIT 100;'
+	)
+
+Результат на скриншоте (Экран 2.png).
