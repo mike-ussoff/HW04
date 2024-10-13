@@ -18,3 +18,21 @@ from openrowset('MSDASQL'
 	)
 
 Результат на скриншоте (Экран 2.png).
+
+5. Создаем linked server
+exec sp_addlinkedserver @server = 'pg_wwi'
+	, @srvproduct = 'PostgreSQL'
+	, @provider = 'MSDASQL'
+	, @datasrc = 'PostgreSQL35W'
+
+6. Авторизация exec sp_addlinkedsrvlogin 'pg_wwi', 'false', null, 'mikeu', 'ytgfhjkm'
+
+7. Опции:
+exec sp_serveroption N'pg_wwi', @optname = N'rpc', @optvalue  = N'on'
+exec sp_serveroption N'pg_wwi', @optname = N'rpc out', @optvalue  = N'on'
+exec sp_serveroption 'pg_wwi', @optname = 'lazy schema validation', @optvalue = false
+
+8. Получение данных
+select top 10 * from pg_wwi.wideworldimporters.sales.invoicelines
+
+Результат на скриншоте (Экран 3.png).
